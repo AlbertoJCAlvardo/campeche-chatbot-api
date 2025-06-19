@@ -1,0 +1,8 @@
+Django==4.2.0
+python-dotenv==1.0.0
+google-cloud-storage==2.9.0
+protobuf==3.20.2
+chromadb==0.3.29
+requests==2.31.0
+google-generativeai==0.3.0
+gunicorn==21.2.0
