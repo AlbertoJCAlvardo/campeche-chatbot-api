@@ -1,5 +1,5 @@
-# Use Python 3.13 with full build tools
-FROM python:3.13-slim
+# Usar Python 3.12
+FROM python:3.12-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -9,7 +9,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # Create working directory
 WORKDIR /app
 
-# Install system dependencies with full build tools
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
@@ -17,12 +17,16 @@ RUN apt-get update && apt-get install -y \
     g++ \
     pkg-config \
     python3-dev \
+    curl \
     && rm -rf /var/lib/apt/lists/*
+
+# Actualizar pip y instalar setuptools PRIMERO
+RUN pip install --upgrade pip setuptools>=69.0.0
 
 # Copy requirements
 COPY requirements.txt .
 
-# Install Python dependencies
+# Install Python dependencies (setuptools ya estará disponible)
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project code
