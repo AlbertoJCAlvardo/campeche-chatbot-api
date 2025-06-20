@@ -1,38 +1,41 @@
-# Usar Python 3.13
+# Use Python 3.13 with full build tools
 FROM python:3.13-slim
 
-# Establecer variables de entorno
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DEBIAN_FRONTEND=noninteractive
 
-# Crear directorio de trabajo
+# Create working directory
 WORKDIR /app
 
-# Instalar dependencias del sistema
+# Install system dependencies with full build tools
 RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
     gcc \
     g++ \
     pkg-config \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar requirements
+# Copy requirements
 COPY requirements.txt .
 
-# Instalar dependencias de Python
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar el código del proyecto
+# Copy project code
 COPY . .
 
-# Crear directorios necesarios
+# Create necessary directories
 RUN mkdir -p /app/data/chromadb /app/static /app/staticfiles
 
-# Establecer permisos
+# Set permissions
 RUN chmod +x /app/entrypoint.sh
 
-# Exponer puerto
+# Expose port
 EXPOSE 8000
 
-# Comando de entrada
+# Entrypoint command
 ENTRYPOINT ["/app/entrypoint.sh"]
